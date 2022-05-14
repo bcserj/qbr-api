@@ -15,6 +15,15 @@ class TimezoneController extends Controller
      *     tags = {"Timezone"},
      *     summary = "Get all timezones",
      *     @OA\Parameter (
+     *          name = "all",
+     *          in = "query",
+     *          description = "Get all locations or with paginate",
+     *          required = false,
+     *          @OA\Schema (
+     *              type = "boolean"
+     *          )
+     *     ),
+     *     @OA\Parameter (
      *          name = "page",
      *          in = "query",
      *          description = "Page number",
@@ -44,14 +53,12 @@ class TimezoneController extends Controller
      */
     public function index(Request $request)
     {
-        $filter = $request->get("name");
-        $query = Timezone::query();
+        $query = Timezone::query()->when($request->input("name"), function ($query) use ($request) {
+            return $query->where("name", "like", "%" . $request->input("name") . "%");
+        });
 
-        if ($filter) {
-            $query->where("name", "like", "%" . $filter . "%");
-        }
-
-        $model = $query->paginate(15);
+        $model = (filter_var($request->input("all"), FILTER_VALIDATE_BOOLEAN)) ?
+            $query->get() : $query->simplePaginate(10);
 
         return response()->json($model);
     }

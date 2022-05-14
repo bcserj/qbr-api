@@ -44,6 +44,15 @@
                 "operationId": "timezonesAll",
                 "parameters": [
                     {
+                        "name": "all",
+                        "in": "query",
+                        "description": "Get all locations or with paginate",
+                        "required": false,
+                        "schema": {
+                            "type": "boolean"
+                        }
+                    },
+                    {
                         "name": "page",
                         "in": "query",
                         "description": "Page number",

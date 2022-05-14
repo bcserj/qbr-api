@@ -26,12 +26,9 @@ use App\Http\Controllers\Controller as HttpController;
  * )
  * @OA\Server (
  *     description = "Qberry Laravel API server",
- *     url = "http://localhost/api/v1"
+ *     url = "L5_SWAGGER_CONST_HOST"
  * )
- * @OA\Server (
- *     description = "Qberry Laravel API server",
- *     url = "http://qbr.local/api/v1"
- * )
+
  * @OA\SecurityScheme (
  *     type = "apiKey",
  *     in = "header",
