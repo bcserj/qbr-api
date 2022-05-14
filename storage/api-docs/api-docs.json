@@ -1,0 +1,99 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Qberry Laravel API documentation",
+        "contact": {
+            "email": "bc.serj@gmail.com"
+        },
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://localhost/api/v1",
+            "description": "Qberry Laravel API server"
+        },
+        {
+            "url": "http://qbr.local/api/v1",
+            "description": "Qberry Laravel API server"
+        }
+    ],
+    "paths": {
+        "/locations": {
+            "get": {
+                "tags": [
+                    "Location"
+                ],
+                "summary": "Get all locations",
+                "operationId": "locationsAll",
+                "responses": {
+                    "200": {
+                        "description": "Successfull operation",
+                        "content": {
+                            "application/json": {}
+                        }
+                    }
+                }
+            }
+        },
+        "/timezones": {
+            "get": {
+                "tags": [
+                    "Timezone"
+                ],
+                "summary": "Get all timezones",
+                "operationId": "timezonesAll",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Page number",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "Part of name (%str%)",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successfull operation",
+                        "content": {
+                            "application/json": {}
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "X-API-TOKEN": {
+                "type": "apiKey",
+                "name": "X-API-TOKEN",
+                "in": "header"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "User",
+            "description": ""
+        },
+        {
+            "name": "Timezone",
+            "description": ""
+        },
+        {
+            "name": "Location",
+            "description": ""
+        }
+    ]
+}

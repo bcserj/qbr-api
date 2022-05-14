@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\Timezone;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,4 +17,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
+});
+
+Route::get('dev', function (){
+
+    return dd(Timezone::first());
 });
