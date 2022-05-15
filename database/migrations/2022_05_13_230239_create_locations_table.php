@@ -16,7 +16,7 @@ class CreateLocationsTable extends Migration
         Schema::create('locations', function (Blueprint $table) {
             $table->id();
             $table->tinyText('title');
-            $table->foreignId('timezone_id');
+            $table->foreignId('timezone_id')->constrained();
             $table->timestamps();
         });
     }

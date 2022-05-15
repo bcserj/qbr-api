@@ -1,5 +1,7 @@
 <?php
 
+namespace App\Virtual\Models;
+
 /**
  * @OA\Schema (
  *     title = "Location",
@@ -38,7 +40,7 @@ class Location
 
     /**
      * @OA\Property(
-     *      title="timezone_id",
+     *      title="timezone",
      *      description="Tocation timezone model",
      *      example="337"
      * )
@@ -46,5 +48,5 @@ class Location
      * @var \App\Virtual\Models\Timezone
      *
      */
-    public $timezone_id;
+    public $timezone;
 }

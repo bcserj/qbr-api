@@ -3,9 +3,13 @@
 namespace App\Http\Controllers\API\V1;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreLocationRequest;
+use App\Http\Resources\LocationResource;
 use App\Http\Resources\LocationsCollection;
 use App\Models\Location;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Symfony\Component\HttpFoundation\Response as HttpResponse;
 
 class LocationController extends Controller
 {
@@ -41,7 +45,7 @@ class LocationController extends Controller
      *     description = "Return created location data",
      *     @OA\RequestBody (
      *          required = true,
-     *          @OA\JsonContent(ref = "#/components/shemas/StoreLocationRequest")
+     *          @OA\JsonContent(ref = "#/components/schemas/StoreLocationRequest")
      *     ),
      *      @OA\Response(
      *          response=201,
@@ -65,22 +69,50 @@ class LocationController extends Controller
      * Store a newly created resource in storage.
      *
      * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse|Response|object
      */
-    public function store(Request $request)
+    public function store(StoreLocationRequest $request)
     {
-        //
+        $location = Location::create($request->all());
+        return (new LocationResource($location))->response()->setStatusCode(HttpResponse::HTTP_CREATED);
     }
 
     /**
+     *
+     * @OA\Get (
+     *     path = "/locations/{id}",
+     *     operationId = "locationGet",
+     *     tags = {"Location"},
+     *     summary="Get location information",
+     *     description="Returns location data",
+     *     @OA\Parameter (
+     *          name = "id",
+     *          description = "Location id",
+     *          required=true,
+     *          in="path",
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *     ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation",
+     *          @OA\JsonContent(ref="#/components/schemas/Location")
+     *       ),
+     *      @OA\Response(
+     *          response=400,
+     *          description="Bad Request"
+     *      )
+     * )
+     *
      * Display the specified resource.
      *
      * @param \App\Models\Location $location
-     * @return \Illuminate\Http\Response
+     * @return LocationResource
      */
     public function show(Location $location)
     {
-        //
+        return new LocationResource($location);
     }
 
     /**

@@ -26,7 +26,7 @@ use App\Http\Controllers\Controller as HttpController;
  * )
  * @OA\Server (
  *     description = "Qberry Laravel API server",
- *     url = "L5_SWAGGER_CONST_HOST"
+ *     url = L5_SWAGGER_CONST_HOST
  * )
 
  * @OA\SecurityScheme (

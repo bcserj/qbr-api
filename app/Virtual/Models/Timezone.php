@@ -1,12 +1,13 @@
 <?php
 
-namespace \App\Virtual\Models;
+namespace App\Virtual\Models;
+
 /**
  * @OA\Schema (
- *     title = "Location",
- *     description = "Location model",
+ *     title = "Timezone",
+ *     description = "Timezone model",
  *     @OA\Xml (
- *          name = "Location"
+ *          name = "Timezone"
  *     )
  * )
  */
@@ -28,8 +29,8 @@ class Timezone
     /**
      * @OA\Property(
      *      title="title",
-     *      description="Location title",
-     *      example="Kiyv"
+     *      description="Time zone",
+     *      example="Europe/Kiev"
      * )
      *
      * @var string
@@ -39,12 +40,12 @@ class Timezone
 
     /**
      * @OA\Property(
-     *      title="timezone_id",
-     *      description="Tocation timezone model",
-     *      example="337"
+     *      title="offset",
+     *      description="Time zone offset",
+     *      example="+03:00"
      * )
      *
-     * @var \App\Virtual\Models\Timezone
+     * @var string;
      */
-    public $timezone_id;
+    public $offset;
 }

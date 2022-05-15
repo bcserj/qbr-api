@@ -3,8 +3,11 @@
 namespace App\Http\Controllers\API\V1;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\TimezoneResource;
+use App\Http\Resources\TimezonesCollection;
 use App\Models\Timezone;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class TimezoneController extends Controller
 {
@@ -14,31 +17,40 @@ class TimezoneController extends Controller
      *     operationId = "timezonesAll",
      *     tags = {"Timezone"},
      *     summary = "Get all timezones",
-     *     @OA\Parameter (
-     *          name = "all",
-     *          in = "query",
-     *          description = "Get all locations or with paginate",
-     *          required = false,
-     *          @OA\Schema (
-     *              type = "boolean"
+     *     @OA\Response (
+     *          response = "200",
+     *          description = "Successfull operation",
+     *          @OA\MediaType(
+     *              mediaType="application/json",
      *          )
      *     ),
+     *      @OA\Response(
+     *          response=400,
+     *          description="Bad Request"
+     *      ),
+     * )
+     *
+     * @return TimezonesCollection|\Illuminate\Http\JsonResponse|object
+     */
+    public function index(Request $request)
+    {
+        return (new TimezonesCollection(Timezone::all()))->response()->setStatusCode(Response::HTTP_OK);
+    }
+
+
+    /**
+     * @OA\Get (
+     *     path = "/timezones/{id}",
+     *     operationId = "timezoneGet",
+     *     tags = {"Timezone"},
+     *     summary = "Get timezone data",
      *     @OA\Parameter (
-     *          name = "page",
-     *          in = "query",
-     *          description = "Page number",
-     *          required = false,
-     *          @OA\Schema (
-     *              type = "integer"
-     *          )
-     *     ),
-     *     @OA\Parameter (
-     *          name = "name",
-     *          in = "query",
-     *          description = "Part of name (%str%)",
-     *          required = false,
-     *          @OA\Schema (
-     *              type = "string"
+     *          name = "id",
+     *          description = "Timezone id",
+     *          required=true,
+     *          in="path",
+     *          @OA\Schema(
+     *              type="integer"
      *          )
      *     ),
      *     @OA\Response (
@@ -47,31 +59,20 @@ class TimezoneController extends Controller
      *          @OA\MediaType(
      *              mediaType="application/json",
      *          )
-     *     )
+     *     ),
+     *      @OA\Response(
+     *          response=404,
+     *          description="Bad Request"
+     *      ),
      * )
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function index(Request $request)
-    {
-        $query = Timezone::query()->when($request->input("name"), function ($query) use ($request) {
-            return $query->where("name", "like", "%" . $request->input("name") . "%");
-        });
-
-        $model = (filter_var($request->input("all"), FILTER_VALIDATE_BOOLEAN)) ?
-            $query->get() : $query->simplePaginate(10);
-
-        return response()->json($model);
-    }
-
-
-    /**
+     *
      * Display the specified resource.
      *
-     * @param int $id
-     * @return \Illuminate\Http\Response
+     * @param Timezone $timezone
+     * @return TimezoneResource
      */
-    public function show(Timezone $id)
+    public function show(Timezone $timezone)
     {
-        return Timezone::findOrFail($id);
+        return new TimezoneResource($timezone);
     }
 }

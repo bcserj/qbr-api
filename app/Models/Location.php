@@ -19,5 +19,4 @@ class Location extends Model
     {
         return $this->belongsTo(Timezone::class);
     }
-
 }
