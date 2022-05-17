@@ -4,11 +4,11 @@ namespace App\Http\Controllers\API\V1;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreLocationRequest;
+use App\Http\Requests\UpdateLocationRequest;
 use App\Http\Resources\LocationResource;
 use App\Http\Resources\LocationsCollection;
 use App\Models\Location;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Symfony\Component\HttpFoundation\Response as HttpResponse;
 
 class LocationController extends Controller
@@ -68,11 +68,12 @@ class LocationController extends Controller
      *
      * Store a newly created resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param Request $request
      * @return \Illuminate\Http\JsonResponse|Response|object
      */
     public function store(StoreLocationRequest $request)
     {
+        //check perms
         $location = Location::create($request->all());
         return (new LocationResource($location))->response()->setStatusCode(HttpResponse::HTTP_CREATED);
     }
@@ -116,18 +117,97 @@ class LocationController extends Controller
     }
 
     /**
+     * @OA\Put (
+     *     path = "/locations/{id}",
+     *     operationId = "locationUpdate",
+     *     tags = {"Location"},
+     *     summary = "Update location",
+     *     description = "Return updated location data",
+     *     @OA\Parameter(
+     *          name="id",
+     *          description="location id",
+     *          required=true,
+     *          in="path",
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *      ),
+     *     @OA\RequestBody (
+     *          required = true,
+     *          @OA\JsonContent(ref = "#/components/schemas/UpdateLocationRequest")
+     *     ),
+     *      @OA\Response(
+     *          response=202,
+     *          description="Successful operation",
+     *          @OA\JsonContent(ref="#/components/schemas/Location")
+     *       ),
+     *      @OA\Response(
+     *          response=400,
+     *          description="Bad Request"
+     *      ),
+     *      @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *      ),
+     *      @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *      ),
+     *      @OA\Response(
+     *          response=404,
+     *          description="Resource Not Found"
+     *      )
+     * )
+     *
      * Update the specified resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \App\Models\Location $location
-     * @return \Illuminate\Http\Response
+     * @param UpdateLocationRequest $request
+     * @param Location $location
+     * @return \Illuminate\Http\JsonResponse|Response|object
      */
-    public function update(Request $request, Location $location)
+    public function update(UpdateLocationRequest $request, Location $location)
     {
-        //
+        //check perms
+        $location->update($request->all());
+
+        return (new LocationResource($location))->response()->setStatusCode(HttpResponse::HTTP_ACCEPTED);
     }
 
     /**
+     * @OA\Delete(
+     *      path="/locations/{id}",
+     *      operationId="locationDelete",
+     *      tags={"Location"},
+     *      summary="Delete existing location",
+     *      description="Deletes location item and returns no content",
+     *      @OA\Parameter(
+     *          name="id",
+     *          description="Location id",
+     *          required=true,
+     *          in="path",
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=204,
+     *          description="Successful operation",
+     *          @OA\JsonContent()
+     *       ),
+     *      @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *      ),
+     *      @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *      ),
+     *      @OA\Response(
+     *          response=404,
+     *          description="Resource Not Found"
+     *      )
+     * )
+     *
      * Remove the specified resource from storage.
      *
      * @param \App\Models\Location $location
@@ -135,6 +215,9 @@ class LocationController extends Controller
      */
     public function destroy(Location $location)
     {
-        //
+        //check perms
+        //add check blocks. if freezer blocks exist destroy disabled
+        $location->delete();
+        return response(null, HttpResponse::HTTP_NO_CONTENT);
     }
 }

@@ -104,6 +104,97 @@
                         "description": "Bad Request"
                     }
                 }
+            },
+            "put": {
+                "tags": [
+                    "Location"
+                ],
+                "summary": "Update location",
+                "description": "Return updated location data",
+                "operationId": "locationUpdate",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "location id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdateLocationRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "202": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Location"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Location"
+                ],
+                "summary": "Delete existing location",
+                "description": "Deletes location item and returns no content",
+                "operationId": "locationDelete",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Location id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                }
             }
         },
         "/timezones": {
@@ -251,6 +342,27 @@
                 }
             },
             "StoreLocationRequest": {
+                "title": "Store Location request",
+                "description": "Store Location request body data",
+                "required": [
+                    "title",
+                    "timezone_id"
+                ],
+                "properties": {
+                    "title": {
+                        "title": "title",
+                        "description": "Name of the new location",
+                        "example": "Kiyv"
+                    },
+                    "timezone_id": {
+                        "title": "timezone_id",
+                        "description": "Timezone`s id of the new location",
+                        "example": "337"
+                    }
+                },
+                "type": "object"
+            },
+            "UpdateLocationRequest": {
                 "title": "Store Location request",
                 "description": "Store Location request body data",
                 "required": [
