@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\FreezerStorage;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -13,11 +14,12 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // \App\Models\User::factory(10)->create();
+         \App\Models\User::factory(10)->create();
         $this->call([
             TimezoneSeeder::class,
             LocationSeeder::class,
-            FreezerBlockPropertySeeder::class
+            FreezerBlockPropertySeeder::class,
+          //  FreezerStorage::class
         ]);
     }
 }
