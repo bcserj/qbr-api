@@ -17,6 +17,7 @@ class CreateFreezerBlocksTable extends Migration
             $table->id();
             $table->foreignIdFor(\App\Models\FreezerStorage::class);
             $table->foreignIdFor(\App\Models\FreezerBlockProperty::class);
+            $table->boolean('available')->default(false);
             $table->timestamps();
         });
     }

@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 
 class Location extends Model
 {
@@ -16,13 +17,25 @@ class Location extends Model
     /**
      * @return BelongsTo
      */
-    protected function timezone(): BelongsTo
+    public function timezone(): BelongsTo
     {
         return $this->belongsTo(Timezone::class);
     }
 
-    protected function freezerStorages(): HasMany
+    public function storages(): HasMany
     {
         return $this->hasMany(FreezerStorage::class);
+    }
+
+
+    /**
+     * @return HasManyThrough
+     */
+    public function blocks(): HasManyThrough
+    {
+        return $this->hasManyThrough(
+            FreezerBlock::class,
+            FreezerStorage::class
+        );
     }
 }

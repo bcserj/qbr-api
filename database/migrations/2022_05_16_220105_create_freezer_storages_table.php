@@ -16,7 +16,7 @@ class CreateFreezerStoragesTable extends Migration
         Schema::create('freezer_storages', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(\App\Models\Location::class);
-            $table->tinyInteger('temperature');
+            $table->unsignedTinyInteger('temperature');
             $table->timestamps();
         });
     }

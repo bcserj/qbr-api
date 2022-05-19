@@ -17,7 +17,10 @@ class LocationResource extends JsonResource
         return [
             'id' => $this->id,
             'title' => $this->title,
-            'timezone' => new TimezoneResource($this->timezone)
+            'blocks' => [
+                'available_count' => $this->blocks->count()
+            ],
+            'timezone' =>  new TimezoneResource($this->timezone)
         ];
     }
 }

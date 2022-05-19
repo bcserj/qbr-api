@@ -2,10 +2,10 @@
 
 namespace Database\Seeders;
 
-use App\Models\FreezerStorage;
+use App\Models\FreezerBlock;
 use Illuminate\Database\Seeder;
 
-class FreezerStorageSeeder extends Seeder
+class FreezerBlockSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -14,8 +14,8 @@ class FreezerStorageSeeder extends Seeder
      */
     public function run()
     {
-        if (FreezerStorage::all()->isEmpty()) {
-            FreezerStorage::factory(100)->create();
+        if(FreezerBlock::all()->isEmpty()){
+            FreezerBlock::factory(1000)->create();
         }
     }
 }

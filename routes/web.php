@@ -19,7 +19,11 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('dev', function (){
+Route::get('/', function () {
+        //volume
+        //temperature
+        //storage_time
 
-    return dd(Timezone::first());
+
+    return dd(request()->get('volume'));
 });

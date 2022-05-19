@@ -33,7 +33,13 @@ class LocationController extends Controller
      */
     public function index(): LocationsCollection
     {
-        return new LocationsCollection(Location::all());
+        $locations = \App\Models\Location::with([
+            'timezone',
+            'blocks' => function ($q) {
+            $q->available();
+        }])->get();
+        debug($locations);
+        return new LocationsCollection($locations);
     }
 
     /**

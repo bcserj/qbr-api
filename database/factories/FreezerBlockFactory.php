@@ -2,15 +2,12 @@
 
 namespace Database\Factories;
 
+use App\Models\FreezerBlockProperty;
 use App\Models\FreezerStorage;
-use App\Models\Location;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class FreezerStorageFactory extends Factory
+class FreezerBlockFactory extends Factory
 {
-    protected $model = FreezerStorage::class;
-
-
     /**
      * Define the model's default state.
      *
@@ -19,8 +16,9 @@ class FreezerStorageFactory extends Factory
     public function definition()
     {
         return [
-            'temperature' => random_int(-100, 100),
-            'location_id'=> Location::all()->random()
+            "freezer_storage_id" => FreezerStorage::all()->random(),
+            "freezer_block_property_id" => FreezerBlockProperty::all()->random(),
+            "available" => boolval(random_int(0, 1))
         ];
     }
 }

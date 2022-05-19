@@ -27,6 +27,7 @@ Route::group(
         Route::apiResources([
             "locations" => V1\LocationController::class,
         ]);
+        Route::post('location/{location}/calculate', V1\CalculateController::class)->name('location.calculate');
         Route::apiResource("timezones", V1\TimezoneController::class)
             ->only(['index', 'show']);
     });
