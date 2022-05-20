@@ -2,10 +2,11 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
+use Illuminate\Http\Exceptions\HttpResponseException;
 
-class StoreLocationRequest extends FormRequest
+abstract class ApiRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,13 +25,20 @@ class StoreLocationRequest extends FormRequest
      */
     public function rules()
     {
+
         return [
-            "title" => "required|unique:locations|between:3,30",
-            "timezone_id" => [
-                "required",
-                "numeric",
-                Rule::exists('timezones', 'id')
-                ]
+
         ];
     }
+
+    protected function failedValidation(Validator $validator)
+    {
+       throw new HttpResponseException(response()->json([
+           'success'   => false,
+           'message'   => 'Validation errors',
+           'data'      => $validator->errors()
+       ]));
+    }
+
+
 }

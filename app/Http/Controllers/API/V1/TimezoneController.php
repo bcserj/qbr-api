@@ -2,14 +2,13 @@
 
 namespace App\Http\Controllers\API\V1;
 
-use App\Http\Controllers\Controller;
 use App\Http\Resources\TimezoneResource;
 use App\Http\Resources\TimezonesCollection;
 use App\Models\Timezone;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class TimezoneController extends Controller
+class TimezoneController extends ApiController
 {
     /**
      * @OA\Get (

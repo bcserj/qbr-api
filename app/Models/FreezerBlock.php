@@ -5,8 +5,6 @@ namespace App\Models;
 use Database\Factories\FreezerBlockFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Database\Query\Builder;
 
 class FreezerBlock extends Model
 {
@@ -29,6 +27,14 @@ class FreezerBlock extends Model
         return $query->where('available', false);
     }
 
+
+    public function properties(){
+        return $this->belongsTo(FreezerBlockProperty::class, 'freezer_block_property_id');
+    }
+
+    public function storage(){
+        return $this->belongsTo(FreezerStorage::class, 'freezer_storage_id');
+    }
 
     /**
      * @return FreezerBlockFactory

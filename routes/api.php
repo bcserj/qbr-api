@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Route;
 |
 | Here is where you can register API routes for your application. These
 | routes are loaded by the RouteServiceProvider within a group which
-| is assigned the "api" middleware group. Enjoy building your API!
+| is assigned the 'api' middleware group. Enjoy building your API!
 |
 */
 
@@ -20,14 +20,20 @@ use Illuminate\Support\Facades\Route;
 
 Route::group(
     [
-        "prefix" => 'v1',
-        "as" => "api."
+        'prefix' => 'v1',
+        'as' => 'api.'
     ],
     function () {
-        Route::apiResources([
-            "locations" => V1\LocationController::class,
-        ]);
-        Route::post('location/{location}/calculate', V1\CalculateController::class)->name('location.calculate');
-        Route::apiResource("timezones", V1\TimezoneController::class)
+        Route::post('register', [V1\RegisterController::class, 'register'])->name('user.register');
+        Route::post('login', [V1\RegisterController::class, 'login'])->name('user.login');
+
+        Route::apiResource('timezones', V1\TimezoneController::class, ['only' => 'index', 'show'])
             ->only(['index', 'show']);
+
+        Route::middleware('auth:api')->group(function(){
+            Route::apiResource('locations', V1\LocationController::class);
+            Route::apiResource("locations.calculate", V1\CalculateController::class)->only(['index']);
+            Route::apiResource('location.storages', V1\FreezerStorageController::class);
+            Route::apiResource('location.storages.blocks', V1\FreezeBlockController::class);
+        });
     });

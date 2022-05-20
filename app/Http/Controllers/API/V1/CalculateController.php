@@ -2,19 +2,13 @@
 
 namespace App\Http\Controllers\API\V1;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Http\Requests\CalculateRequest;
+use App\Models\Location;
 
-class CalculateController extends Controller
+class CalculateController extends ApiController
 {
-    /**
-     * Handle the incoming request.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function __invoke(Request $request)
+    public function index(CalculateRequest $request, Location $location)
     {
-        debug($request->all());
+
     }
 }

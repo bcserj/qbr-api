@@ -19,11 +19,3 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/', function () {
-        //volume
-        //temperature
-        //storage_time
-
-
-    return dd(request()->get('volume'));
-});

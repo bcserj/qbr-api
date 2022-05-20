@@ -2,16 +2,13 @@
 
 namespace App\Http\Controllers\API\V1;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreLocationRequest;
-use App\Http\Requests\UpdateLocationRequest;
+use App\Http\Requests\LocationRequest;
 use App\Http\Resources\LocationResource;
-use App\Http\Resources\LocationsCollection;
 use App\Models\Location;
+use App\Models\Timezone;
 use Illuminate\Http\Request;
-use Symfony\Component\HttpFoundation\Response as HttpResponse;
 
-class LocationController extends Controller
+class LocationController extends ApiController
 {
     /**
      * @OA\Get (
@@ -28,18 +25,15 @@ class LocationController extends Controller
      *     )
      * )
      * Display a listing of the resource.
-     *
-     * @return LocationsCollection
      */
-    public function index(): LocationsCollection
+    public function index(): \Illuminate\Http\JsonResponse
     {
         $locations = \App\Models\Location::with([
             'timezone',
             'blocks' => function ($q) {
-            $q->available();
-        }])->get();
-        debug($locations);
-        return new LocationsCollection($locations);
+                $q->available();
+            }])->get();
+        return $this->sendResponse(LocationResource::collection($locations), 'Locations retrieved successfully.');
     }
 
     /**
@@ -73,15 +67,12 @@ class LocationController extends Controller
      * )
      *
      * Store a newly created resource in storage.
-     *
-     * @param Request $request
-     * @return \Illuminate\Http\JsonResponse|Response|object
      */
-    public function store(StoreLocationRequest $request)
+    public function store(LocationRequest $request)
     {
         //check perms
         $location = Location::create($request->all());
-        return (new LocationResource($location))->response()->setStatusCode(HttpResponse::HTTP_CREATED);
+        return $this->sendResponse(new LocationResource($location), 'Location created successfully.');
     }
 
     /**
@@ -113,13 +104,10 @@ class LocationController extends Controller
      * )
      *
      * Display the specified resource.
-     *
-     * @param \App\Models\Location $location
-     * @return LocationResource
      */
     public function show(Location $location)
     {
-        return new LocationResource($location);
+        return $this->sendResponse(new LocationResource($location), 'Locations retrieved successfully.');
     }
 
     /**
@@ -160,23 +148,28 @@ class LocationController extends Controller
      *          description="Forbidden"
      *      ),
      *      @OA\Response(
-     *          response=404,
-     *          description="Resource Not Found"
+     *          response=500,
+     *          description="Internal Server Error"
      *      )
      * )
      *
      * Update the specified resource in storage.
-     *
-     * @param UpdateLocationRequest $request
-     * @param Location $location
-     * @return \Illuminate\Http\JsonResponse|Response|object
      */
-    public function update(UpdateLocationRequest $request, Location $location)
+    public function update(Request $request, Location $location)
     {
         //check perms
+
+        $validator = \Validator::make($request->all(), [
+            'title' => 'required',
+            "timezone_id" => 'bail|numeric|gt:0|exists:' . Timezone::class . ', id'
+        ]);
+
+        if ($validator->fails()) {
+            return $this->sendError('Validation error', $validator->errors());
+        }
         $location->update($request->all());
 
-        return (new LocationResource($location))->response()->setStatusCode(HttpResponse::HTTP_ACCEPTED);
+        return $this->sendResponse(new LocationResource($location), 'Location updated successfully.');
     }
 
     /**
@@ -216,14 +209,12 @@ class LocationController extends Controller
      *
      * Remove the specified resource from storage.
      *
-     * @param \App\Models\Location $location
-     * @return \Illuminate\Http\Response
      */
     public function destroy(Location $location)
     {
         //check perms
         //add check blocks. if freezer blocks exist destroy disabled
         $location->delete();
-        return response(null, HttpResponse::HTTP_NO_CONTENT);
+        return $this->sendResponse([], 'Location deleted successfully.');
     }
 }

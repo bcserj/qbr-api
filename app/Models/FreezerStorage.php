@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class FreezerStorage extends Model
 {
@@ -19,24 +20,22 @@ class FreezerStorage extends Model
      * Scope a query to include storages with temperature $temperature +-2
      *  $temperature value will be replaced to negative.(11  -> -11)
      *
-     * @param Builder $query
-     * @param int $temperature
-     * @return Builder
      */
-    public function scopeWithTemperature(Builder $query, int $temperature): Builder
+    public function scopeWithTemperature( $query, int $temperature)
     {
+        $temperature = abs($temperature);
         return $query->whereBetween('temperature', [$temperature - 2, $temperature + 2]);
     }
 
 
-    protected static function newFactory(): FreezerStorageFactory
-    {
-        return FreezerStorageFactory::new();
-    }
-
     protected function location(): BelongsTo
     {
         return $this->belongsTo(Location::class);
+    }
+
+    protected function blocks(): HasMany
+    {
+        return $this->hasMany(FreezerBlock::class);
     }
 
     /**
@@ -46,18 +45,22 @@ class FreezerStorage extends Model
      */
     protected function setTemperatureAttribute($value)
     {
-        $this->attributes['temperature'] = abs($value);
+            $this->attributes['temperature'] = abs($value);
     }
 
     /**
      * DB column has type unsignedTinyInteger. That`s why we need to mutate value
      *
      * @param $value
-     * @return void
+     * @return float|int
      */
     protected function getTemperatureAttribute($value)
     {
-        $this->attributes['temperature'] = -1 * abs($value);
+        return -1 * abs($value);
     }
 
+    protected static function newFactory(): FreezerStorageFactory
+    {
+        return FreezerStorageFactory::new();
+    }
 }

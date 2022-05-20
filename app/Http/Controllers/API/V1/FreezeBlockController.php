@@ -4,7 +4,7 @@ namespace App\Http\Controllers\API\V1;
 
 use Illuminate\Http\Request;
 
-class FreezerStorageController extends ApiController
+class FreezeBlockController extends ApiController
 {
     /**
      * Display a listing of the resource.
