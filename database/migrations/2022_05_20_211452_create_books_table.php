@@ -1,10 +1,11 @@
 <?php
 
+use App\Models\Book;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateOrdersTable extends Migration
+class CreateBooksTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,16 +14,16 @@ class CreateOrdersTable extends Migration
      */
     public function up()
     {
-        Schema::create('orders', function (Blueprint $table) {
+        Schema::create('books', function (Blueprint $table) {
             $table->id();
-            $table->enum('status', ['booked', 'completed', 'overdue'])->default('booked');
+            $table->enum('status', [Book::STATUS_BOOKED, Book::STATUS_COMPLETED, Book::STATUS_OVERDUE])
+                ->default(Book::STATUS_BOOKED);
             $table->tinyInteger('temperature');
-            $table->timestamp('start_storage');
-            $table->timestamp('end_storage');
-            $table->string('random_code')->unique()->default(Str::random(12));
+            $table->unsignedTinyInteger('days');
+            $table->timestamp('start_booking_date');
+            $table->string('random_code')->unique()->nullable();
             $table->foreignIdFor(\App\Models\User::class);
             $table->foreignIdFor(\App\Models\Location::class);
-            $table->foreignIdFor(\App\Models\FreezerBlock::class);
             $table->timestamps();
         });
     }
@@ -34,6 +35,6 @@ class CreateOrdersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('orders');
+        Schema::dropIfExists('books');
     }
 }

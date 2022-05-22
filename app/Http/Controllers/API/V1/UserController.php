@@ -5,7 +5,7 @@ namespace App\Http\Controllers\API\V1;
 use App\Models\User;
 use Illuminate\Http\Request;
 
-class RegisterController extends ApiController
+class UserController extends ApiController
 {
     public function register(Request $request)
     {
@@ -23,21 +23,30 @@ class RegisterController extends ApiController
         $input = $request->all();
         $input['password'] = bcrypt($input['password']);
         $user = User::create($input);
-        $success['token'] =  $user->createToken('app_token')->accessToken;
-        $success['name'] =  $user->name;
+        $success['token'] = $user->createToken('app_token')->accessToken;
+        $success['name'] = $user->name;
 
         return $this->sendResponse($success, 'User register successfully.');
     }
 
     public function login(Request $request)
     {
-        if (\Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
+        if (auth()->attempt(['email' => $request->email, 'password' => $request->password])) {
             $user = \Auth::user();
             $success['token'] = $user->createToken('app_token')->accessToken;
             $success['name'] = $user->name;
             return $this->sendResponse($success, 'User login successfully.');
         }
 
+        return $this->sendError('Unauthorised.', ['error' => 'Unauthorised']);
+    }
+
+    public function logout()
+    {
+        if (auth()->check()) {
+            auth()->user()->token()->revoke();
+            return $this->sendResponse([], 'User logout successfully.');
+        }
         return $this->sendError('Unauthorised.', ['error' => 'Unauthorised']);
     }
 }

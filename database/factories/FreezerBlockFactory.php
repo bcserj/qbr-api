@@ -18,7 +18,6 @@ class FreezerBlockFactory extends Factory
         return [
             "freezer_storage_id" => FreezerStorage::all()->random(),
             "freezer_block_property_id" => FreezerBlockProperty::all()->random(),
-            "available" => boolval(random_int(0, 1))
         ];
     }
 }

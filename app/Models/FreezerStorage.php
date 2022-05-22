@@ -21,10 +21,15 @@ class FreezerStorage extends Model
      *  $temperature value will be replaced to negative.(11  -> -11)
      *
      */
-    public function scopeWithTemperature( $query, int $temperature)
+    public function scopeWithTemperature($query, int $temperature)
     {
         $temperature = abs($temperature);
         return $query->whereBetween('temperature', [$temperature - 2, $temperature + 2]);
+    }
+
+    public function scopeWithLocation($query, $locationId)
+    {
+        return $query->where('location_id', $locationId);
     }
 
 
@@ -33,7 +38,7 @@ class FreezerStorage extends Model
         return $this->belongsTo(Location::class);
     }
 
-    protected function blocks(): HasMany
+    function blocks(): HasMany
     {
         return $this->hasMany(FreezerBlock::class);
     }
@@ -45,7 +50,7 @@ class FreezerStorage extends Model
      */
     protected function setTemperatureAttribute($value)
     {
-            $this->attributes['temperature'] = abs($value);
+        $this->attributes['temperature'] = abs($value);
     }
 
     /**

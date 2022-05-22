@@ -39,7 +39,7 @@ use Symfony\Component\HttpFoundation\Response as HttpResponse;
  */
 class ApiController extends Controller
 {
-    public function sendResponse($result, $message)
+    public function sendResponse($result, $message = 'Success.')
     {
         $response = [
             'success' => true,

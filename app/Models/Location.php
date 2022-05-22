@@ -4,9 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasManyThrough;
+
 
 class Location extends Model
 {
@@ -14,24 +12,21 @@ class Location extends Model
 
     protected $fillable = ["title", "timezone_id"];
 
-    /**
-     * @return BelongsTo
-     */
-    public function timezone(): BelongsTo
+    public function timezone()
     {
         return $this->belongsTo(Timezone::class);
     }
 
-    public function storages(): HasMany
+    public function storages()
     {
         return $this->hasMany(FreezerStorage::class);
     }
 
+    public function books(){
+        return $this->hasMany(Book::class);
+    }
 
-    /**
-     * @return HasManyThrough
-     */
-    public function blocks(): HasManyThrough
+    public function blocks()
     {
         return $this->hasManyThrough(
             FreezerBlock::class,
