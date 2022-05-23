@@ -26,6 +26,7 @@ Route::group(
     function () {
         Route::post('register', [V1\UserController::class, 'register'])->name('user.register');
         Route::post('login', [V1\UserController::class, 'login'])->name('user.login');
+        Route::post('logout', [V1\UserController::class, 'logout'])->name('user.logout');
 
         Route::apiResource('timezones', V1\TimezoneController::class)
             ->only(['index', 'show']);
@@ -35,8 +36,7 @@ Route::group(
         Route::apiResource('location.storages', V1\FreezerStorageController::class);
         Route::apiResource('location.storages.blocks', V1\FreezeBlockController::class);
 
-        Route::middleware('auth:api')->group(function(){
-            Route::post('logout', [V1\UserController::class, 'logout'])->name('user.logout');
+        Route::middleware('auth:api')->group(function () {
             Route::resource('books', V1\BookController::class)->only(['index', 'show', 'store']);
         });
     });

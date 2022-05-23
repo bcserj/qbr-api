@@ -14,11 +14,10 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-//        if (User::all()->isEmpty()) {
-//           // \App\Models\User::factory(10)->create();
-//        }
+//        \App\Models\User::factory(10)->create();
 
         $this->call([
+            UserSeeder::class,
             TimezoneSeeder::class,
             LocationSeeder::class,
             FreezerBlockPropertySeeder::class,

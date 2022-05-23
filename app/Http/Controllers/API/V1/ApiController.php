@@ -14,27 +14,33 @@ use Symfony\Component\HttpFoundation\Response as HttpResponse;
  *          email = "bc.serj@gmail.com"
  *     ),
  * )
- * @OA\Tag (
- *     name = "User",
- *     description = ""
- * )
- * @OA\Tag (
- *     name = "Timezone",
- *     description = ""
- * )
- * @OA\Tag (
- *     name = "Location",
- *     description = ""
- * )
+ *
  * @OA\Server (
  *     description = "Qberry Laravel API server",
  *     url = L5_SWAGGER_CONST_HOST
  * )
+ *
+ * @OA\Tag (
+ *     name = "Users",
+ *     description = ""
+ * )
+ * @OA\Tag (
+ *     name = "Timezones",
+ *     description = ""
+ * )
+ * @OA\Tag (
+ *     name = "Locations",
+ *     description = ""
+ * )
+ * @OA\Tag (
+ *     name = "Booking",
+ *     description = ""
+ * )
  * @OA\SecurityScheme (
  *     type = "apiKey",
  *     in = "header",
- *     name = "X-API-TOKEN",
- *     securityScheme = "X-API-TOKEN"
+ *     name = "Authorization",
+ *     securityScheme = "token"
  * )
  */
 class ApiController extends Controller

@@ -14,7 +14,7 @@ class LocationController extends ApiController
      * @OA\Get (
      *     path = "/locations",
      *     operationId = "locationsAll",
-     *     tags = {"Location"},
+     *     tags = {"Locations"},
      *     summary = "Get all locations",
      *     @OA\Response (
      *          response = "200",
@@ -36,38 +36,38 @@ class LocationController extends ApiController
         return $this->sendResponse(LocationResource::collection($locations), 'Locations retrieved successfully.');
     }
 
-    /**
-     * @OA\Post (
-     *     path = "/locations",
-     *     operationId = "locationAdd",
-     *     tags = {"Location"},
-     *     summary = "Store new location",
-     *     description = "Return created location data",
-     *     @OA\RequestBody (
-     *          required = true,
-     *          @OA\JsonContent(ref = "#/components/schemas/StoreLocationRequest")
-     *     ),
-     *      @OA\Response(
-     *          response=201,
-     *          description="Successful operation",
-     *          @OA\JsonContent(ref="#/components/schemas/Location")
-     *       ),
-     *      @OA\Response(
-     *          response=400,
-     *          description="Bad Request"
-     *      ),
-     *      @OA\Response(
-     *          response=401,
-     *          description="Unauthenticated",
-     *      ),
-     *      @OA\Response(
-     *          response=403,
-     *          description="Forbidden"
-     *      )
-     * )
-     *
-     * Store a newly created resource in storage.
-     */
+//    /**
+//     * @OA\Post (
+//     *     path = "/locations",
+//     *     operationId = "locationAdd",
+//     *     tags = {"Locations"},
+//     *     summary = "Store new location",
+//     *     description = "Return created location data",
+//     *     @OA\RequestBody (
+//     *          required = true,
+//     *          @OA\JsonContent(ref = "#/components/schemas/StoreLocationRequest")
+//     *     ),
+//     *      @OA\Response(
+//     *          response=201,
+//     *          description="Successful operation",
+//     *          @OA\JsonContent(ref="#/components/schemas/Location")
+//     *       ),
+//     *      @OA\Response(
+//     *          response=400,
+//     *          description="Bad Request"
+//     *      ),
+//     *      @OA\Response(
+//     *          response=401,
+//     *          description="Unauthenticated",
+//     *      ),
+//     *      @OA\Response(
+//     *          response=403,
+//     *          description="Forbidden"
+//     *      )
+//     * )
+//     *
+//     * Store a newly created resource in storage.
+//     */
     public function store(LocationRequest $request)
     {
         //check perms
@@ -80,7 +80,7 @@ class LocationController extends ApiController
      * @OA\Get (
      *     path = "/locations/{id}",
      *     operationId = "locationGet",
-     *     tags = {"Location"},
+     *     tags = {"Locations"},
      *     summary="Get location information",
      *     description="Returns location data",
      *     @OA\Parameter (
@@ -95,7 +95,6 @@ class LocationController extends ApiController
      *      @OA\Response(
      *          response=200,
      *          description="Successful operation",
-     *          @OA\JsonContent(ref="#/components/schemas/Location")
      *       ),
      *      @OA\Response(
      *          response=400,
@@ -110,51 +109,51 @@ class LocationController extends ApiController
         return $this->sendResponse(new LocationResource($location), 'Locations retrieved successfully.');
     }
 
-    /**
-     * @OA\Put (
-     *     path = "/locations/{id}",
-     *     operationId = "locationUpdate",
-     *     tags = {"Location"},
-     *     summary = "Update location",
-     *     description = "Return updated location data",
-     *     @OA\Parameter(
-     *          name="id",
-     *          description="location id",
-     *          required=true,
-     *          in="path",
-     *          @OA\Schema(
-     *              type="integer"
-     *          )
-     *      ),
-     *     @OA\RequestBody (
-     *          required = true,
-     *          @OA\JsonContent(ref = "#/components/schemas/UpdateLocationRequest")
-     *     ),
-     *      @OA\Response(
-     *          response=202,
-     *          description="Successful operation",
-     *          @OA\JsonContent(ref="#/components/schemas/Location")
-     *       ),
-     *      @OA\Response(
-     *          response=400,
-     *          description="Bad Request"
-     *      ),
-     *      @OA\Response(
-     *          response=401,
-     *          description="Unauthenticated",
-     *      ),
-     *      @OA\Response(
-     *          response=403,
-     *          description="Forbidden"
-     *      ),
-     *      @OA\Response(
-     *          response=500,
-     *          description="Internal Server Error"
-     *      )
-     * )
-     *
-     * Update the specified resource in storage.
-     */
+//    /**
+//     * @OA\Put (
+//     *     path = "/locations/{id}",
+//     *     operationId = "locationUpdate",
+//     *     tags = {"Locations"},
+//     *     summary = "Update location",
+//     *     description = "Return updated location data",
+//     *     @OA\Parameter(
+//     *          name="id",
+//     *          description="location id",
+//     *          required=true,
+//     *          in="path",
+//     *          @OA\Schema(
+//     *              type="integer"
+//     *          )
+//     *      ),
+//     *     @OA\RequestBody (
+//     *          required = true,
+//     *          @OA\JsonContent(ref = "#/components/schemas/UpdateLocationRequest")
+//     *     ),
+//     *      @OA\Response(
+//     *          response=202,
+//     *          description="Successful operation",
+//     *          @OA\JsonContent(ref="#/components/schemas/Location")
+//     *       ),
+//     *      @OA\Response(
+//     *          response=400,
+//     *          description="Bad Request"
+//     *      ),
+//     *      @OA\Response(
+//     *          response=401,
+//     *          description="Unauthenticated",
+//     *      ),
+//     *      @OA\Response(
+//     *          response=403,
+//     *          description="Forbidden"
+//     *      ),
+//     *      @OA\Response(
+//     *          response=500,
+//     *          description="Internal Server Error"
+//     *      )
+//     * )
+//     *
+//     * Update the specified resource in storage.
+//     */
     public function update(Request $request, Location $location)
     {
         //check perms
@@ -172,44 +171,44 @@ class LocationController extends ApiController
         return $this->sendResponse(new LocationResource($location), 'Location updated successfully.');
     }
 
-    /**
-     * @OA\Delete(
-     *      path="/locations/{id}",
-     *      operationId="locationDelete",
-     *      tags={"Location"},
-     *      summary="Delete existing location",
-     *      description="Deletes location item and returns no content",
-     *      @OA\Parameter(
-     *          name="id",
-     *          description="Location id",
-     *          required=true,
-     *          in="path",
-     *          @OA\Schema(
-     *              type="integer"
-     *          )
-     *      ),
-     *      @OA\Response(
-     *          response=204,
-     *          description="Successful operation",
-     *          @OA\JsonContent()
-     *       ),
-     *      @OA\Response(
-     *          response=401,
-     *          description="Unauthenticated",
-     *      ),
-     *      @OA\Response(
-     *          response=403,
-     *          description="Forbidden"
-     *      ),
-     *      @OA\Response(
-     *          response=404,
-     *          description="Resource Not Found"
-     *      )
-     * )
-     *
-     * Remove the specified resource from storage.
-     *
-     */
+//    /**
+//     * @OA\Delete(
+//     *      path="/locations/{id}",
+//     *      operationId="locationDelete",
+//     *      tags={"Locations"},
+//     *      summary="Delete existing location",
+//     *      description="Deletes location item and returns no content",
+//     *      @OA\Parameter(
+//     *          name="id",
+//     *          description="Location id",
+//     *          required=true,
+//     *          in="path",
+//     *          @OA\Schema(
+//     *              type="integer"
+//     *          )
+//     *      ),
+//     *      @OA\Response(
+//     *          response=204,
+//     *          description="Successful operation",
+//     *          @OA\JsonContent()
+//     *       ),
+//     *      @OA\Response(
+//     *          response=401,
+//     *          description="Unauthenticated",
+//     *      ),
+//     *      @OA\Response(
+//     *          response=403,
+//     *          description="Forbidden"
+//     *      ),
+//     *      @OA\Response(
+//     *          response=404,
+//     *          description="Resource Not Found"
+//     *      )
+//     * )
+//     *
+//     * Remove the specified resource from storage.
+//     *
+//     */
     public function destroy(Location $location)
     {
         //check perms

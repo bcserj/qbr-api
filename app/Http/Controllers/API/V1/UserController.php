@@ -29,6 +29,30 @@ class UserController extends ApiController
         return $this->sendResponse($success, 'User register successfully.');
     }
 
+    /**
+     * @OA\Post (
+     *     path = "/login",
+     *     operationId = "userLogin",
+     *     tags = {"Users"},
+     *     summary = "Login user",
+     *     description = "Return user data (token and othrer).",
+     *     @OA\RequestBody (
+     *          required = true,
+     *          @OA\JsonContent(ref = "#/components/schemas/UserLoginRequest")
+     *     ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successfully.",
+     *          @OA\JsonContent(ref="#/components/schemas/UserLoginResponse")
+     *       ),
+     *      @OA\Response(
+     *          response=401,
+     *          description="Unauthorized",
+     *          @OA\JsonContent(ref="#/components/schemas/ErrorResponse")
+     *      )
+     * )
+     *
+     */
     public function login(Request $request)
     {
         if (auth()->attempt(['email' => $request->email, 'password' => $request->password])) {
@@ -41,6 +65,26 @@ class UserController extends ApiController
         return $this->sendError('Unauthorised.', ['error' => 'Unauthorised']);
     }
 
+    /**
+     * @OA\Post (
+     *     path = "/logout",
+     *     operationId = "userLogout",
+     *     tags = {"Users"},
+     *     summary = "Logout user",
+     *     description = "",
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successfully.",
+     *          @OA\JsonContent(ref="#/components/schemas/SuccessResponse")
+     *       ),
+     *      @OA\Response(
+     *          response=401,
+     *          description="Unauthorized",
+     *          @OA\JsonContent(ref="#/components/schemas/ErrorResponse")
+     *      )
+     * )
+     *
+     */
     public function logout()
     {
         if (auth()->check()) {

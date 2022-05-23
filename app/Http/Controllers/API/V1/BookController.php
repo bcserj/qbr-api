@@ -10,6 +10,23 @@ use Illuminate\Http\Request;
 
 class BookController extends ApiController
 {
+    /**
+     * @OA\Get (
+     *     path = "/books",
+     *     operationId = "booksAll",
+     *     security = {{"token": {}}},
+     *     tags = {"Booking"},
+     *     summary = "Get all books by user",
+     *     @OA\Response (
+     *          response = "200",
+     *          description = "Successfull operation",
+     *          @OA\MediaType(
+     *              mediaType="application/json",
+     *          )
+     *     )
+     * )
+     * Display a listing of the resource.
+     */
     public function index()
     {
         $books = Book::byUserId(auth()->id())->get();
@@ -65,7 +82,7 @@ class BookController extends ApiController
             'book_id' => $newBook->id
         ]);
 
-        return $this->sendResponse(new BookResource(Book::findOrFail($newBook->id)));
+        return $this->sendResponse(new BookResource(Book::find($newBook->id)), 'Location created successfully.');
     }
 
 }

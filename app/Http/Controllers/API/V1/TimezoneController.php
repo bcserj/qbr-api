@@ -14,7 +14,7 @@ class TimezoneController extends ApiController
      * @OA\Get (
      *     path = "/timezones",
      *     operationId = "timezonesAll",
-     *     tags = {"Timezone"},
+     *     tags = {"Timezones"},
      *     summary = "Get all timezones",
      *     @OA\Response (
      *          response = "200",
@@ -24,8 +24,8 @@ class TimezoneController extends ApiController
      *          )
      *     ),
      *      @OA\Response(
-     *          response=400,
-     *          description="Bad Request"
+     *          response=404,
+     *          description="Not Found"
      *      ),
      * )
      *
@@ -41,7 +41,7 @@ class TimezoneController extends ApiController
      * @OA\Get (
      *     path = "/timezones/{id}",
      *     operationId = "timezoneGet",
-     *     tags = {"Timezone"},
+     *     tags = {"Timezones"},
      *     summary = "Get timezone data",
      *     @OA\Parameter (
      *          name = "id",
