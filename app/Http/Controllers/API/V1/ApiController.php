@@ -36,12 +36,7 @@ use Symfony\Component\HttpFoundation\Response as HttpResponse;
  *     name = "Booking",
  *     description = ""
  * )
- * @OA\SecurityScheme (
- *     type = "apiKey",
- *     in = "header",
- *     name = "Authorization",
- *     securityScheme = "token"
- * )
+
  */
 class ApiController extends Controller
 {

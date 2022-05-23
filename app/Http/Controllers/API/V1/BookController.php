@@ -14,7 +14,7 @@ class BookController extends ApiController
      * @OA\Get (
      *     path = "/books",
      *     operationId = "booksAll",
-     *     security = {{"token": {}}},
+     *     security = {{"bearer_token": {}}},
      *     tags = {"Booking"},
      *     summary = "Get all books by user",
      *     @OA\Response (
@@ -34,6 +34,8 @@ class BookController extends ApiController
     }
 
     /**
+     *
+     *
      * We use this method on location details page and have location_id in uri.
      * Need use this value in the form like hidden input.
      * @param Request $request
