@@ -17,6 +17,7 @@ class CreateFreezerStoragesTable extends Migration
             $table->id();
             $table->foreignIdFor(\App\Models\Location::class);
             $table->unsignedTinyInteger('temperature');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

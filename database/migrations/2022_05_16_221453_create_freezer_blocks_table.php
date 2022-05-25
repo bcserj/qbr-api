@@ -18,6 +18,7 @@ class CreateFreezerBlocksTable extends Migration
             $table->foreignIdFor(\App\Models\FreezerStorage::class);
             $table->foreignIdFor(\App\Models\FreezerBlockProperty::class);
             $table->foreignIdFor(\App\Models\Book::class)->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

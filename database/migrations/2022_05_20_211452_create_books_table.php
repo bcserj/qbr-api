@@ -24,6 +24,7 @@ class CreateBooksTable extends Migration
             $table->string('random_code')->unique()->nullable();
             $table->foreignIdFor(\App\Models\User::class);
             $table->foreignIdFor(\App\Models\Location::class);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

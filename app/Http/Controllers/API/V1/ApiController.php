@@ -40,14 +40,14 @@ use Symfony\Component\HttpFoundation\Response as HttpResponse;
  */
 class ApiController extends Controller
 {
-    public function sendResponse($result, $message = 'Success.')
+    public function sendResponse($result, $message = 'Success.', $code = HttpResponse::HTTP_OK)
     {
         $response = [
             'success' => true,
             'data' => $result,
             'message' => $message,
         ];
-        return response()->json($response, HttpResponse::HTTP_OK);
+        return response()->json($response, $code);
     }
 
     public function sendError($error, $errorMessages = [], $code = HttpResponse::HTTP_NOT_FOUND)

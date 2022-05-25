@@ -6,6 +6,8 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class BookResource extends JsonResource
 {
+    private $includeRandomCode = false;
+
     /**
      * Transform the resource into an array.
      *
@@ -14,21 +16,35 @@ class BookResource extends JsonResource
      */
     public function toArray($request)
     {
-        return [
+        $response = [
             'id' => $this->id,
-            'params' => [
-                'days' => $this->days,
-                'cost' => $this->days * $this->blocks->map->properties->sum('cost_per_day'),
-                'temperature' => $this->temperature,
-                'location' => [
-                    'title' => $this->location->title,
-                    'timezone' => $this->location->timezone->name,
-                    'start_booking_timezone_date' => $this->start_booking_date
-                ],
-                'blocks' => [
-                    'count' => $this->blocks->count('id')
-                ]
-            ]
+            'days' => $this->days,
+            'cost' => $this->days * $this->blocks->map->properties->sum('cost_per_day'),
+            'temperature' => $this->temperature,
         ];
+
+        if ($code = $this->when($this->includeRandomCode, $this->random_code)) {
+            $response = array_merge_recursive($response, ['code' => $code]);
+        }
+
+        $response = array_merge_recursive($response, [
+            'location' => [
+                'title' => $this->location->title,
+                'timezone' => $this->location->timezone->name,
+                'start_booking_timezone_date' => $this->start_booking_date
+            ],
+            'blocks' => [
+                'count' => $this->blocks->count()
+            ]
+        ]);
+
+        return $response;
+    }
+
+
+    public function includeRandomCode()
+    {
+        $this->includeRandomCode = true;
+        return $this;
     }
 }

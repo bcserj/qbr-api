@@ -21,7 +21,7 @@ class SuccessResponse
      *
      * @var boolean
      */
-    private $status;
+    public $status;
 
     /**
      * @OA\Property (
@@ -29,12 +29,12 @@ class SuccessResponse
      *
      * @var object
      */
-    private $data;
+    public $data;
 
     /**
      * @OA\Property (
      * )
      * @var string
      */
-    private $message;
+    public $message;
 }

@@ -20,6 +20,7 @@ class CreateFreezerBlockPropertiesTable extends Migration
             $table->unsignedTinyInteger('height');
             $table->unsignedMediumInteger('volume')->virtualAs('length * width * height');
             $table->unsignedInteger('cost_per_day');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

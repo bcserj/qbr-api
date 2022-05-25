@@ -5,11 +5,12 @@ namespace App\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 
 class Book extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     const STATUS_BOOKED = 1;
     const STATUS_COMPLETED = 2;
@@ -24,7 +25,7 @@ class Book extends Model
         'random_code'
     ];
 
-    protected $hidden = ['status', 'random_code', 'start_booking_date'];
+    protected $hidden = ['random_code'];
 
     protected $dates = ['start_booking_date', 'created_at', 'updated_at'];
 
@@ -50,6 +51,16 @@ class Book extends Model
 
     public function getStartBookingDateAttribute($value)
     {
-        return Carbon::make($value)->format('d.m.Y');
+        return Carbon::parse($value)->format('d.m.Y');
+    }
+
+    public function getCreatedAtAttribute($value)
+    {
+        return Carbon::parse($value)->format('d.m.Y H:m:s');
+    }
+
+    public function getUpdatedAtAttribute($value)
+    {
+        return Carbon::parse($value)->format('d.m.Y H:m:s');
     }
 }

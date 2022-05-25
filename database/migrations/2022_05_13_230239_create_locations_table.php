@@ -17,6 +17,7 @@ class CreateLocationsTable extends Migration
             $table->id();
             $table->tinyText('title');
             $table->foreignIdFor(\App\Models\Timezone::class);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

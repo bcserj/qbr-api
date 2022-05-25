@@ -19,9 +19,7 @@ class LocationController extends ApiController
      *     @OA\Response (
      *          response = "200",
      *          description = "Successfull operation",
-     *          @OA\MediaType(
-     *              mediaType="application/json",
-     *          )
+     *          @OA\JsonContent(ref="#/components/schemas/LocationsListResponse"),
      *     )
      * )
      * Display a listing of the resource.
@@ -95,10 +93,11 @@ class LocationController extends ApiController
      *      @OA\Response(
      *          response=200,
      *          description="Successful operation",
+     *          @OA\JsonContent(ref="#/components/schemas/LocationsListResponse"),
      *       ),
      *      @OA\Response(
-     *          response=400,
-     *          description="Bad Request"
+     *          response=404,
+     *          description="Not Found"
      *      )
      * )
      *
@@ -106,7 +105,7 @@ class LocationController extends ApiController
      */
     public function show(Location $location)
     {
-        return $this->sendResponse(new LocationResource($location), 'Locations retrieved successfully.');
+        return $this->sendResponse(new LocationResource($location), 'Location retrieved successfully.');
     }
 
 //    /**

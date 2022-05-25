@@ -25,8 +25,85 @@
                     "200": {
                         "description": "Successfull operation",
                         "content": {
-                            "application/json": {}
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/BooksListResponse"
+                                }
+                            }
                         }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer_token": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Booking"
+                ],
+                "summary": "Store new book",
+                "description": "Return created book data",
+                "operationId": "bookAdd",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/BookStoreRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/BookItemResponse"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer_token": []
+                    }
+                ]
+            }
+        },
+        "/books/{id}": {
+            "get": {
+                "tags": [
+                    "Booking"
+                ],
+                "summary": "Get book",
+                "operationId": "bookGet",
+                "responses": {
+                    "200": {
+                        "description": "Successfull operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/BookItemResponse"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "Not Found"
                     }
                 },
                 "security": [
@@ -117,7 +194,11 @@
                     "200": {
                         "description": "Successfull operation",
                         "content": {
-                            "application/json": {}
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/LocationsListResponse"
+                                }
+                            }
                         }
                     }
                 }
@@ -144,10 +225,17 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Successful operation"
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/LocationsListResponse"
+                                }
+                            }
+                        }
                     },
-                    "400": {
-                        "description": "Bad Request"
+                    "404": {
+                        "description": "Not Found"
                     }
                 }
             }
@@ -334,6 +422,51 @@
                     "name": "Timezone"
                 }
             },
+            "BookStoreRequest": {
+                "title": "Book store request",
+                "description": "Book store request body data",
+                "required": [
+                    "location_id",
+                    "temperature",
+                    "days",
+                    "volume"
+                ],
+                "properties": {
+                    "location_id": {
+                        "description": "Location identifier",
+                        "example": "1"
+                    },
+                    "temperature": {
+                        "description": "Temperature. Can be less or equal to 0.",
+                        "example": "-20"
+                    },
+                    "days": {
+                        "description": "Count days for booking. Can be 1-24.",
+                        "example": "3"
+                    },
+                    "volume": {
+                        "example": "41"
+                    }
+                },
+                "type": "object"
+            },
+            "BookUpdateRequest": {
+                "title": "Book update request",
+                "description": "Book update request body data",
+                "required": [
+                    "location_id",
+                    "temperature",
+                    "days",
+                    "volume"
+                ],
+                "properties": {
+                    "code": {
+                        "description": "Book random code",
+                        "example": "7gkK5reEakUG+"
+                    }
+                },
+                "type": "object"
+            },
             "UserLoginRequest": {
                 "title": "User login request",
                 "description": "User login request body data",
@@ -355,13 +488,98 @@
                 },
                 "type": "object"
             },
+            "BlocksBookResource": {
+                "title": "BlocksBookResource",
+                "description": "Blocks book resource",
+                "properties": {
+                    "count": {
+                        "type": "integer",
+                        "example": "3"
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "BlocksBookResource"
+                }
+            },
+            "BookResource": {
+                "title": "BookResource",
+                "description": "Book resource",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": "2"
+                    },
+                    "days": {
+                        "type": "integer",
+                        "example": "5"
+                    },
+                    "cost": {
+                        "example": "30193"
+                    },
+                    "temperature": {
+                        "type": "integer",
+                        "example": "-37"
+                    },
+                    "location": {
+                        "$ref": "#/components/schemas/LocationBookResource"
+                    },
+                    "blocks": {
+                        "$ref": "#/components/schemas/BlocksBookResource"
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "BookResource"
+                }
+            },
+            "BookWithCodeResource": {
+                "title": "BookWithCodeResource",
+                "description": "Book with code resource",
+                "type": "object",
+                "xml": {
+                    "name": "BookWithCodeResource"
+                },
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/BookResource"
+                    },
+                    {
+                        "properties": {
+                            "code": {
+                                "type": "string",
+                                "example": "7gkK5reEakUG"
+                            }
+                        }
+                    }
+                ]
+            },
+            "LocationBookResource": {
+                "title": "LocationBookResource",
+                "description": "Location book resource",
+                "properties": {
+                    "title": {
+                        "type": "string"
+                    },
+                    "timezone": {
+                        "type": "string"
+                    },
+                    "start_booking_timezone_date": {
+                        "type": "string",
+                        "example": "24.05.2022"
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "LocationBookResource"
+                }
+            },
             "UserResource": {
                 "title": "UserResource",
                 "description": "User resource",
                 "properties": {
                     "token": {
-                        "title": "title",
-                        "description": "Location title",
+                        "description": " Bearer token",
                         "type": "string",
                         "example": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiI5NjVjZDBiZS1kMWM0LTRiYWEtYjY4NS1mZmVhNzI0ZjkxNzgiLCJqdGkiOiI3MzhiOGI0ZTBkN2QwMzVmZmRhMjZiYjYzZmVkNDgzZDQ1OTQzOTcxODdjYTgzYThmODNlM2FjZmQ4NjA3MGUzNWNmODYxYjI1NGU1NzAxZiIsImlhdCI6MTY1MzI2MDIyNC4zMDI2MTcsIm5iZiI6MTY1MzI2MDIyNC4zMDI2MjMsImV4cCI6MTY4NDc5NjIyNC4yODgwNDIsInN1YiI6IjEiLCJzY29wZXMiOltdfQ.fEVX5K0SbVcA_3nfR5DrVsE9CcFoHQrQjdugQEhCTqr2tBh2wKoee_oeIAVf-p6R3mo6aJwKQkOp69kPfr8dR_OAV4gWRT0mUbJ0RGD9dTQZwtVNZzcVOTLOgqrm_ilJYV_DNe17Md97waLr491hRxpppATobt2alsT5eJXDcpVqajgE8qeOyYYFdPHWBT527Ji11Q14d9njO50KCBq8k6g3s06RDl7D82nXDAmc8feelRdCPdc5aL_mF6La-rDCf6ZU4vbBjnUBdq_e1rpOuUEOs-lxJbkbA2NwM76V6czowuLiUKUGPayOGtNxkq3SEGAkBvYFTNC1Vz9I6uQJlDKD98GE8lyudXec4zV66Dx74EZ-UhzA6KRAjHbUJLGUKq-YsNgPo4fIP9TITFcsSS7QxxS10q13EmYFT6vKm7YDZ5M7wufwvHUtXzkbWHcebkdxu6x6QACc0gx17zc-niDE6PD1y4ygccqammo6yQJbpmSA7yWwzHv4agvyIbXLxOF2wRb3seARZRYxqpT75JOgdCIMyzJglYw3QZ56-LGrggXGVq2OBOJ6NE401PPNT2owCLHcgATUUlqs7gRut_Rcnq0ZdtKx2PBEQ5aaczjydEVbPVA7E6W3ps9GLl6Y6jKQkHawkhK91dbb2ArtSyrN7TlFAZxeD10nibjJM6c"
                     },
@@ -374,6 +592,51 @@
                 "xml": {
                     "name": "UserResource"
                 }
+            },
+            "BookItemResponse": {
+                "title": "BookItemResponse",
+                "description": "Book item response",
+                "type": "object",
+                "xml": {
+                    "name": "BookItemResponse"
+                },
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/SuccessResponse"
+                    },
+                    {
+                        "properties": {
+                            "data": {
+                                "$ref": "#/components/schemas/BookWithCodeResource"
+                            }
+                        }
+                    }
+                ]
+            },
+            "BooksListResponse": {
+                "title": "BooksListResponse",
+                "description": "Books list response",
+                "type": "object",
+                "xml": {
+                    "name": "BooksListResponse"
+                },
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/SuccessResponse"
+                    },
+                    {
+                        "properties": {
+                            "data": {
+                                "title": "Data",
+                                "description": "Data wrapper",
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/BookResource"
+                                }
+                            }
+                        }
+                    }
+                ]
             },
             "ErrorResponse": {
                 "title": "ErrorResponse",
@@ -394,6 +657,52 @@
                 "xml": {
                     "name": "ErrorResponse"
                 }
+            },
+            "LocationItemResponse": {
+                "title": "LocationItemResponse",
+                "description": "Location item response",
+                "type": "object",
+                "xml": {
+                    "name": "LocationItemResponse"
+                },
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/SuccessResponse"
+                    },
+                    {
+                        "properties": {
+                            "data": {
+                                "title": "Data",
+                                "description": "Data wrapper"
+                            }
+                        }
+                    }
+                ]
+            },
+            "LocationsListResponse": {
+                "title": "LocationsListResponse",
+                "description": "Locations list response",
+                "type": "object",
+                "xml": {
+                    "name": "LocationsListResponse"
+                },
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/SuccessResponse"
+                    },
+                    {
+                        "properties": {
+                            "data": {
+                                "title": "Data",
+                                "description": "Data wrapper",
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/Location"
+                                }
+                            }
+                        }
+                    }
+                ]
             },
             "SuccessResponse": {
                 "title": "SuccessResponse",
