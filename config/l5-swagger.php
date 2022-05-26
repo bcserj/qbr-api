@@ -288,7 +288,7 @@ return [
          * Constants which can be used in annotations
          */
         'constants' => [
-            'L5_SWAGGER_CONST_HOST' => env('APP_URL', 'http://my-default-host.com'). '/api/v1',
+            'L5_SWAGGER_CONST_HOST' => env('APP_URL', 'http://my-default-host.com') . env('API_PATH', '/api/v1'),
         ],
     ],
 ];
