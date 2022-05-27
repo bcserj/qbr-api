@@ -37,6 +37,6 @@ Route::group(
         Route::apiResource('location.storages.blocks', V1\FreezeBlockController::class);
 
         Route::middleware('auth:api')->group(function () {
-            Route::resource('books', V1\BookController::class)->only(['index', 'create', 'show']);
+            Route::resource('books', V1\BookController::class);
         });
     });

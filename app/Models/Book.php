@@ -29,11 +29,7 @@ class Book extends Model
 
     protected $dates = ['start_booking_date', 'created_at', 'updated_at'];
 
-    public function scopeByUserId($query, $userId)
-    {
-        return $query->where('user_id', $userId);
-    }
-
+    // start relations
     public function location()
     {
         return $this->belongsTo(Location::class);
@@ -44,10 +40,15 @@ class Book extends Model
         return $this->hasMany(FreezerBlock::class);
     }
 
-    public function generateRandomCodeAttribute($length = 12): string
+    //end relations
+
+    //start scopes
+    public function scopeByUserId($query, $userId)
     {
-        return \Str::random($length);
+        return $query->where('user_id', $userId);
     }
+    //end scopes
+
 
     public function getStartBookingDateAttribute($value)
     {
@@ -63,4 +64,11 @@ class Book extends Model
     {
         return Carbon::parse($value)->format('d.m.Y H:m:s');
     }
+
+
+    public function generateRandomCodeAttribute($length = 12): string
+    {
+        return \Str::random($length);
+    }
+
 }

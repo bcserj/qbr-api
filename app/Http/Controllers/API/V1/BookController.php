@@ -7,6 +7,7 @@ use App\Models\Book;
 use App\Models\FreezerBlock;
 use App\Models\Location;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\Response as HttpResponse;
 
 class BookController extends ApiController
@@ -56,6 +57,14 @@ class BookController extends ApiController
      *      @OA\Response(
      *          response=401,
      *          description="Unauthorized",
+     *      ),
+     *      @OA\Response(
+     *          response=404,
+     *          description="Not Found",
+     *      ),
+     *      @OA\Response(
+     *          response=500,
+     *          description="Internal Server Error",
      *      )
      * )
      *
@@ -85,17 +94,18 @@ class BookController extends ApiController
             $query->withLocation($input['location_id'])->withTemperature($input['temperature']);
         })->get();
 
+        //Calc volume sum of available blocks for filter
         $maxAvailableVolume = $blocks->map->properties->sum('volume');
 
         // check volume max value
         if (!$maxAvailableVolume) {
             $validator->errors()->add('volume', 'There are no free blocks for the filter. Change filter settings.');
-            return $this->sendError('Volume Error.', $validator->errors());
+            return $this->sendError('Validation Error.', $validator->errors());
         }
 
         if ($input['volume'] > $maxAvailableVolume) {
             $validator->errors()->add('volume', 'The volume must be less or equal to ' . $maxAvailableVolume);
-            return $this->sendError('Volume Error.', $validator->errors());
+            return $this->sendError('Validation Error.', $validator->errors());
         }
 
         //generate collection of blocks for booking. Calc volume
@@ -103,17 +113,21 @@ class BookController extends ApiController
             return (($maxAvailableVolume -= $item->properties->volume) >= $input['volume']);
         });
 
-        $newBook = Book::create($request->merge(['user_id' => auth()->id()])->all());
+        return DB::transaction(function () use ($request, $bookBlocks) {
+            $newBook = Book::create($request->merge(['user_id' => auth()->id()])->all());
 
-        if (!$newBook) {
-            return $this->sendError('Creating booking error');
-        }
+            $bookIds = $bookBlocks->pluck('id');
+            $updatedBlocks = FreezerBlock::whereIn('id', $bookIds)->update([
+                'book_id' => $newBook->value('id')
+            ]);
 
-        FreezerBlock::whereIn('id', $bookBlocks->pluck('id'))->update([
-            'book_id' => $newBook->id
-        ]);
+            if (!$updatedBlocks) {
+                return $this->sendError('Creating booking error!', [], HttpResponse::HTTP_INTERNAL_SERVER_ERROR);
+            }
 
-        return $this->sendResponse(new BookResource(Book::find($newBook->id)), 'Book created successfully.', HttpResponse::HTTP_CREATED);
+
+            return $this->sendResponse(new BookResource($newBook->with('blocks.properties')->first()), 'Book created successfully.', HttpResponse::HTTP_CREATED);
+        });
     }
 
 
